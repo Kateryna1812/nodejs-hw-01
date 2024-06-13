@@ -1,18 +1,17 @@
 import { PATH_DB } from '../constants/contacts.js';
-import { createFakeContact } from '../utils/createFakeContact.js';
 import fs from 'node:fs/promises';
 
-const generateContacts = async (number) => {
+export const thanos = async () => {
   try {
     const prevContacts = await fs.readFile(PATH_DB);
     const contacts = JSON.parse(prevContacts);
-    for (let i = 0; i < number; i++) {
-      contacts.push(createFakeContact());
-    }
-    await fs.writeFile(PATH_DB, JSON.stringify(contacts));
+    const updatedContacts = contacts.filter((contact) => {
+      return Math.random() < 0.51 > 0.5;
+    });
+    await fs.writeFile(PATH_DB, JSON.stringify(updatedContacts));
   } catch (err) {
     console.error('Помилка читання файлу:', err);
   }
 };
 
-await generateContacts(5);
+await thanos();
